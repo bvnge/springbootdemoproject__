@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+	<title>List Of employees</title>
+	<style>
+		body{
+			background-color:pink;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="container">
+
+	<h3 style="text-align:center;">List of Employees</h3>
+	<br></br>
+	<form th:action="@{/employees/employees-list}" method="get">
+	            <input type="number" name="id" placeholder="Enter Employee ID" />
+				<input type="text" name="name" placeholder="Enter Employee Name" />
+	            <button type="submit">Search</button>
+	        </form>
+
+	        
+	        <div th:if="${searchResult}">
+	            <h3>Search Result (By ID):</h3>
+	            <p><strong>ID:</strong> <span th:text="${searchResult.id}"></span></p>
+	            <p><strong>First Name:</strong> <span th:text="${searchResult.firstName}"></span></p>
+	            <p><strong>Last Name:</strong> <span th:text="${searchResult.lastName}"></span></p>
+			
+	        </div>
+			<div th:if="${searchByNameResults}">
+			            <h3>Search Results (By Name):</h3>
+			            <table>
+			                <thead>
+			                    <tr>
+			                        <th>ID</th>
+			                        <th>First Name</th>
+			                        <th>Last Name</th>
+									
+			                    </tr>
+			                </thead>
+							
+			                <tbody>
+			                    <tr th:each="employee : ${searchByNameResults}">
+			                        <td th:text="${employee.id}"></td>
+			                        <td th:text="${employee.firstName}"></td>
+			                        <td th:text="${employee.lastName}"></td>
+									
+			                    </tr>
+			                </tbody>
+			            </table>
+			        </div>
+	        
+
+    
+	<a th:href="@{/employees/formForAdding}"
+		class="btn btn-info btn-sm mb-3">
+		Add Employee
+	</a>
+
+	<table class="table table-bordered table-striped">
+		<thead class="table-transparent">
+			<tr>
+				<th>Employee First Name</th>
+				<th>Employee Last Name</th>
+				<th>Employee Email</th>
+				
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempEmployee : ${employees}">
+			
+				<td th:text="${tempEmployee.firstName}" />	
+				<td th:text="${tempEmployee.lastName}" />	
+				<td th:text="${tempEmployee.email}" />
+
+				
+				<td>
+					<a th:href="@{/employees/formForUpdating(employeeId=${tempEmployee.id})}"
+					   class="btn btn-secondary btn-sm">
+						Update
+					</a>
+
+					<a th:href="@{/employees/delete(employeeId=${tempEmployee.id})}"
+					   class="btn btn-danger btn-sm"
+					   onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+						Delete
+					</a>
+				</td>
+
+			</tr>
+		</tbody>		
+	</table>
+	
+</div>
+	
+</body>
+</html>
